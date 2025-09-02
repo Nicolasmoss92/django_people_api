@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Usuario(models.Model):
     nome = models.CharField(max_length=100)
     sobrenome = models.CharField(max_length=100)
@@ -9,8 +10,11 @@ class Usuario(models.Model):
     def __str__(self):
         return f"{self.nome} {self.sobrenome}"
 
+
 class Endereco(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='enderecos')
+    usuario = models.ForeignKey(
+        Usuario, on_delete=models.CASCADE, related_name="enderecos"
+    )
     rua = models.CharField(max_length=200)
     numero = models.CharField(max_length=10)
     bairro = models.CharField(max_length=100)
