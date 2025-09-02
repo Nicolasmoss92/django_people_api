@@ -12,7 +12,9 @@ class Usuario(models.Model):
 
 
 class Endereco(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='enderecos')
+    usuario = models.ForeignKey(
+        Usuario, on_delete=models.CASCADE, related_name="enderecos"
+    )
     rua = models.CharField(max_length=200)
     numero = models.CharField(max_length=10)
     bairro = models.CharField(max_length=100)
