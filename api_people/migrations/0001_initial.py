@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('cidade', models.CharField(max_length=100)),
                 ('estado', models.CharField(max_length=2)),
                 ('cep', models.CharField(max_length=9)),
-                ('usuario', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enderecos', to='api_rest.usuario')),
+                ('usuario', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enderecos', to='api_people.usuario')),
             ],
         ),
     ]
