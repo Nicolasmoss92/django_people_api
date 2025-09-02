@@ -1,0 +1,15 @@
+[flake8]
+
+exclude =
+    .git,
+    __pycache__,
+    build,
+    dist,
+    .venv,
+    venv,
+    env,
+    .mypy_cache,
+    .pytest_cache
+    .api_root/settings.py
+ignore = E501, E203, W291
+max-line-length = 95
