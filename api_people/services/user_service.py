@@ -18,10 +18,6 @@ class UserService:
         if not all(field in data for field in required_fields):
             raise ValidationError("Campos obrigatórios ausentes.")
 
-        # Exemplo de lógica de validação: checar se e-mail e CPF já existem
-        if User.objects.filter(email=data["email"]).exists():
-            raise ValidationError("E-mail já cadastrado.")
-
         if User.objects.filter(cpf=data["cpf"]).exists():
             raise ValidationError("CPF já cadastrado.")
 

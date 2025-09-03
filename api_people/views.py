@@ -1,6 +1,6 @@
 # api_people/views.py
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import APIView
 from rest_framework.response import Response
 from django.core.exceptions import ValidationError
 
@@ -11,25 +11,26 @@ from .serializers import UserSerializer
 # Instanciamos o serviço para uso na view.
 user_service = UserService()
 
-@api_view(['POST'])
-def create_user_view(request):
+class CreateUserView(APIView):
     """
-    Controller para a criação de um novo usuário.
-    Recebe a requisição POST e delega a lógica ao serviço.
+    View para a criação de um novo usuário.
+    Utiliza a classe APIView para uma estrutura mais organizada.
     """
-    if request.method == 'POST':
-        try:
-            # Chama a lógica de negócio do serviço
-            new_user = user_service.create_user(request.data)
+    
+    def post(self, request, *args, **kwargs):
+        """
+        Método POST para lidar com a criação do usuário.
+        """
+        serializer = UserSerializer(data=request.data)
+        
+        # O is_valid() já lida com as validações definidas no Serializer e no Model
+        # e também com as validações customizadas, como a do `clean_cpf`.
+        if serializer.is_valid():
+
+            user_service.create_user(serializer.validated_data)
             
-            # Serializa o objeto criado e retorna uma resposta de sucesso
-            serializer = UserSerializer(new_user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-        except ValidationError as e:
-            # Lida com erros de validação
-            return Response({"error": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
-        
-        except Exception as e:
-            # Lida com outros erros inesperados
-            return Response({"error": "Ocorreu um erro interno."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            # Retorna uma resposta de sucesso com os dados do usuário criado
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        # Se os dados não forem válidos, o DRF já formata os erros automaticamente.
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
